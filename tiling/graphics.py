@@ -1,10 +1,12 @@
 CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 class TileDisplay():
-    #giving num_rows and num_cols will make a rectangular display
-    #giving grid will make a display that only shows values in the grid
-    #coordinate list
     def __init__(self, num_rows=None, num_cols=None, grid=None, default_char="0"):
+        '''
+            giving num_rows and num_cols will make a rectangular display
+            giving grid will make a display that only shows values in the grid
+            coordinate list
+        '''
         if grid and not num_rows and not num_cols:
 
             #find enclosing dimensions of grid
@@ -33,9 +35,11 @@ class TileDisplay():
             #enforce construction rules since python doesn't let you overload constructors
             raise ValueError("only give both num_rows and num_cols or just a grid")
 
-    #adds a tile at the given location
-    #will do nothing if given tile=None
     def add_tile(self, location, tile):
+        '''
+            adds a tile at the given location
+            will do nothing if given tile=None
+        '''
         if tile == None:
             return
 
