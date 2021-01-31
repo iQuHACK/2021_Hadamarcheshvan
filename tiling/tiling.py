@@ -19,7 +19,7 @@ out_of_bounds_log = []
 
 for prime_location in grid:
     x, y = prime_location
-    for orientation in range(num_orientations):
+    for orientation in range(1,num_orientations+1):
         for tile_square_index in range(num_squares_in_tile):
             x_offset, y_offset = tiles[orientation][tile_square_index] #orientation may be off by one
 
