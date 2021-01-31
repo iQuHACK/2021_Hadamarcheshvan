@@ -13,8 +13,8 @@ for r in range(num_rows):
     for c in range(num_cols):
         grid_points.append((r,c))
 
-grid = set(grid_points)
-#grid = {(0,0),(1,0),(1,1),(1,2)}
+#grid = set(grid_points)
+grid = {(0,0),(1,0),(1,1),(1,2)}
 
 gamma = 10*len(grid) + 1
 
@@ -80,18 +80,15 @@ for prime_location0, prime_location1 in overlap_violations:
 print("sending to leap")
 start_time = time.time()
 sampler = LeapHybridDQMSampler()
-sampleset = sampler.sample_dqm(dqm, time_limit=2*len(grid))
+sampleset = sampler.sample_dqm(dqm, time_limit=5*len(grid))
 sample = sampleset.first.sample
 energy = sampleset.first.energy
 end_time = time.time()
 print("took", end_time-start_time, "seconds")
 
-#print(sample)
-disp = TileDisplay(num_rows, num_cols)
+disp = TileDisplay(grid=grid)
 for location in sample:
     orientation = sample[location]
     disp.add_tile(location, tiles[orientation])
 print(disp)
 print(str(round(-energy/10)) + " fit in the grid!")
-
-# locations_Log {tuple:[(tuple, int)]}
