@@ -16,7 +16,8 @@ class TileDisplay():
             x_offset, y_offset = square
             xp = x+x_offset
             yp = y+y_offset
-            self.display[xp][yp] = character
+            if(0 <= xp < self.num_rows and 0 <= yp < self.num_cols):
+                self.display[xp][yp] = character
     def __str__(self):
         result = ""
         for i in range(len(self.display)):
@@ -27,3 +28,14 @@ class TileDisplay():
             if i != len(self.display)-1:
                 result += "\n"
         return result
+
+if __name__ == "__main__":
+    disp = TileDisplay(5,5)
+    print(disp)
+    print()
+    disp.add_tile((1,1),[(0,0),(0,1),(1,1)])
+    print(disp)
+    print()
+    disp.add_tile((3,3),[(0,0),(0,1),(1,1)])
+    print(disp)
+    print()
