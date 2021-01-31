@@ -5,7 +5,7 @@ num_cols = 4
 grid_points = []
 for r in range(num_rows):
     for c in range(num_cols):
-        grid_points.append((c,r))
+        grid_points.append((r,c))
 
 grid = set(grid_points)
 
@@ -21,7 +21,7 @@ for prime_location in grid:
     x, y = prime_location
     for orientation in range(num_orientations):
         for tile_square_index in range(num_squares_in_tile):
-            x_offset, y_offset = tiles[orientation][tile_square_index]
+            x_offset, y_offset = tiles[orientation][tile_square_index] #orientation may be off by one
 
             #calculate location of new tile
             location = (x+x_offset, y+y_offset)
