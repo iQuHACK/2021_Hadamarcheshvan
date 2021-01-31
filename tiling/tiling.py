@@ -79,11 +79,4 @@ sampler = LeapHybridDQMSampler()
 sampleset = sampler.sample_dqm(dqm)
 sample = sampleset.first.sample
 energy = sampleset.first.energy
-valid = True
-for edge in G.edges:
-    i, j = edge
-    if sample[i] == sample[j]:
-        valid = False
-        break
-
 
