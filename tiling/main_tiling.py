@@ -5,9 +5,11 @@ from graphics import TileDisplay
 import time
 dqm = DiscreteQuadraticModel()
 
+#dimensions of grid
 num_rows = 3
 num_cols = 3
 
+#generate rectangular grid
 grid_points = []
 for r in range(num_rows):
     for c in range(num_cols):
