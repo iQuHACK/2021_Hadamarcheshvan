@@ -47,6 +47,7 @@ for prime_location in grid:
                     else:
                         location_log[location] = [(prime_location, orientation)]
 
+#Setting linear costs
 for prime_location in grid:
     dqm.add_variable(num_orientations+1, label=prime_location)
 for prime_location in grid:
