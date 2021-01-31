@@ -1,112 +1,38 @@
-# Welcome to iQuHACK 2021!
-Check out some info in the [event's repository](https://github.com/iQuHACK/2021) to get started.
-
-Having a README in your team's repository facilitates judging. A good README contains:
-* a clear title for your project,
-* a short abstract,
-* the motivation/goals for your project,
-* a description of the work you did, and
-* proposals for future work.
-
-You can find a potential README template in [one of last year's projects](https://github.com/iQuHACK/QuhacMan).
-
-Feel free to contact the staff with questions over our [event's slack](https://iquhack.slack.com), or via iquhack@mit.edu.
-
-Good luck!
-
-sage's test commit is here
-
-EXAMPLE:
-
-
-_Organizer's note:_ this project won the **creativity award** in iQuHACK 2020.
-
----
-
-# QuhacMan: a Quantum Two-player PacMan Game
-
-Tareq El Dandachi, Matthew Baldwin, Qichen Song, Haozhe Wang
-
+# QuTiling: Quantum Tiling
+Anna Rose Osofsky, Jacob Pritzker, Joseph Feld, Sage Simhon
 ## Introduction
+ 
+Quantum computing has the promise to speed up our solving of NP-hard problems through annealing. The idea of having a verifier of valid solutions allows for clear translation into a QUBO or DFQ, making the use of a QPU fairly straightforward for this class of problems.
+In this project, we present an implementation of a quantum tiling problem solver. Given a list of tiles to use and a grid, it will completely tile that grid with the given tiles if possible. If it is not possible, it will cover as much space as possible. Our system supports arbitrary numbers of arbitrary tiles tiling an arbitrary space in 2 or 3 dimensions, which is an NP-hard problem[1].
+We would like to thank Ariel Jacobs for his amazing tiling problems which inspired this project.
+We saw that other people have used quantum annealing to solve a similar problem[2], but our solution is different since we have 3D capabilities, support for arbitrary tiles and grids, the ability to use pentominoes and above, the ability to find a good solution that doesn’t tile the whole grid in the case where a complete tiling is impossible, and their problem is about having only a specific number of each tile.
+Applications
+Solving these tiling problems has possible applications in real-life packing problems. 
+For 2D-like problems to efficiently pack objects, this could give solutions in arranging desks in an office, or packing furniture into a truck.
+For 3D, this could describe how to efficiently pack a box full of things. With valentines day coming up, the chocolate packing applications are very clear.
+## Defining The DFQ
+We model each tile as a set of squares around $(0,0)$, which we call the prime square, and a number indicating what orientation the tile is in. We create a DFQ where each possible location is a variable with a value that if nonzero indicates there is a prime square on that space. Then its value is the orientation of the tile.
+For a tile with $n$ squares, a nonzero value gives $-n$ to the objective function. This counts how many tiles are covered in the energy. The more tiles get covered, the lower the energy gets.
+Then we need to penalize two things: tiles going off the grid and tiles overlapping with one another. When we have a grid with $N$ spaces and tiles with max number of tiles $n_m$, we use a penalty of $\gamma = N*n_m+1$. If all of the tiles are assigned the smallest value of $n_m$, just one penalty is enough to make that state have an energy of $\gamma-n_m*N = 1$ which is worse than just placing no tiles, which has energy $0$.
+We can stop tiles going off the grid by using linear terms where any value of a variable describing a tile that goes off the grid gets a value of $\gamma$. We can calculate this classically by checking all the squares within all possible tile orientations.
+We can stop tiles from overlapping using quadratic terms. We go through all possible tile placements and orientations and assign a value of $\gamma$ to any pair of tiles that overlap.
+Then we send this DFQ to the D-Wave hybrid solver and get back a tiling, which we can display with our ASCII art generator.
+## User Interface
+Defining a grid: A user can define a grid in two ways. One can specify a $m$ by $n$ rectangle, or a $m$ by $n$ by $p$ rectangular prism, and a list of coordinates will be generated. Alternatively, for an arbitrary grid shape, the user can manually provide a list of coordinates, with the constraint that the minimum value of each coordinate in every dimension must be 0. 
+Defining a set of tiles: A tile shape is defined as a list of tuples of coordinates. Each tile must have a (0,0) coordinate corresponding to the prime square on the tile. The user provides a list of each tile shape, allowing for multiple shapes if desired.
+## Demonstrations
+The GitHub repository link is https://github.com/iQuHACK/2021_Hadamarcheshvan.
 
-The development of quantum computing has offered revolutionary scope for many traditional areas. Game theory, a theory to study decision making in conflict situations, has been transferred into quantum version[1]. The quantum game theory is different from the traditional one in three different ways[2]:
-
-
-
-1. The initial status is entangled
-2. The initial state is superposed
-3. Player strategy is quantum
-
-These features indicate that in a quantum scenario, the definition of win and lose in a game changes fundamentally as a function of the qubit phase and rotation and the collapse of that function upon measurement.
-
-In this project, we propose a quantum game, which is a modified version of the multi-player PacMan game. The game is a validation of quantum game theory and test quantum win strategies.
-
-## Basic principles
-
-The two-qubit state is initialized at entangled states psi = a |01>+b|10>. Each player will collect certain gates during the game (either acting on both qubits or ). Effectively, the prefactor a and b change dynamically during the game. There are measurement gates available for the player to pick up as well. Upon one-shot measurement, the quantum state collapses to player one getting |0> and player two getting |1> or the opposite. Whoever gets |0> is the winner!
-
-The evaluation of the quantum circuit generating from the gaming processes are conducted by qiskit package.
-
-## Elements and rules
-
-
-Two players in the game are gambling the final output of a quantum circuit with two entangled qubits. One can gain an advantage to win by eating beans to modify the Bloch sphere of their qubit. After measurement, the entangled qubits collapse to classical states, determines the game result.
-
-Below is the explanation of essential elements:
-
-
-
-*   Maze: The map is the same as the conventional PacMan game. Players can move at the route divided by walls.
-*   Pac-man: Two players are playing as PacMan in the game. The PacMan can move, eat beans/gates and avoid being caught by ghosts.
-*   Ghost: Ghost is automatically generated by the game to catch the PacMans in the game. The ghosts are moving gates. Once the ghost encountering one PacMan, Rx(-pi/9) gate is applied on one's qubit, and Rx(pi/9) gate is applied on another's qubit.
-*   Beans: Players will eat the beans in the route they move. In this game, one bean means a rotation gate of Rx(pi/36) in PacMan's qubit.
-*   Gates: Gates are randomly added in the beans to change the final quantum circuit. We used a separate quantum circuit to generate random numbers to assign gates in the maze.
-    *   S gate: a separate 2 qubit quantum circuit to randomly generate |00> and |11> states. If |00> is measured, the hit PacMan speeds up, the other PacMan slows down. If If |11> is measured, the hit PacMan slows, the other PacMan speed up.
-    *   Swap gate: The qubits of two players swap.
-    *   H gate: adding Hadamard gate in the circuit.
-*   Measure gate: Once PacMan hits measure gate, the game ends.
-
-Basic Rules:
-
-
-
-*   The game starts with initial maze and two players at the same place. Two players separately control two PacMan in the maze.
-*   PacMan can move, eat beans, eat gates, hit ghosts and eat measure gate.
-*   The two Bloch spheres on the side of maze represent the wave functions of two players.
-*   Player 1 uses WSAD and player 2 uses up down left right arrow key to control their PACMan
-
-Advanced Strategies:
-
-
-
-*   Player should keep the pointer close to the win state to have the largest winning probability. Eating more beans after pointer reach the highest position will lower it down.
-*   Try to lower down the pointer of your opponent
-*   Finish/Measure the game when you have advantage (But moving there may eat more beans, worth it?)
-
-## Demonstrations:
-
-The GitHub repository link is [https://github.com/tareqdandachi/quhackman](https://github.com/tareqdandachi/quhackman).
-
-[1]Piotrowski, Edward W., and Jan Sładkowski. "An invitation to quantum game theory." _International Journal of Theoretical Physics_ 42.5 (2003): 1089-1099.
-
-[2]Quantum Game Theory, Wikipedia. [https://en.wikipedia.org/wiki/Quantum_game_theory](https://en.wikipedia.org/wiki/Quantum_game_theory)
-
-## ToDo:
-### Things we would wanna fix/implement but didn't have enough time to do
-
-
-* Graphics
-* More than 2 player support
-* Better quantum circuit visualization
-* Option to pick between real and simulated quantum simulation as opposed ot editing the source code
-* Adding more gates and game mechanics to make it more fun
-
-## Highlights:
-
-
-
-*   In our game, the result is quantum. No one knows the results until the measurement.
-*    Player can increase their probability of winning, but nothing is guaranteed.
-*   During the game, two players are building a quantum circuit together. They try interfering with the result of the entangled qubits to something they desire.
-*   In the game, we applied Quantum Random Number Generator to find the type and place of gates. The speeds of Quhacmans change with entangled two qubits circuit.
-*   The rule and strategy are quantum. We use Bloch sphere as a win indicator.
+[1] Erik D. Demaine, Martin L. Demaine. Jigsaw Puzzles, Edge Matching, and Polyomino Packing: Connections and Complexity. Graphs and Combinatorics 23, 195–208 (2007). https://doi.org/10.1007/s00373-007-0713-4
+[2] Asa Eagle, Takumi Kato, and Yuichiro Minato. Solving tiling puzzles with quantum annealing. 2019. arXiv: 1904.01770 [quant-ph].
+ 
+ 
+## ToDo
+Things we would want to fix/implement but didn't have enough time to do
+Make it N-dimensional
+Explore efficiency improvements
+Highlights:
+Arbitrary grid shapes and sizes!
+Arbitrary tile shapes and sizes!
+Variety of tile shapes in one problem!
+2- and 3-dimensional support!
