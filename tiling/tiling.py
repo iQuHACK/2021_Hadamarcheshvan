@@ -23,14 +23,14 @@ location_log = {}
 out_of_bounds_log = {}
 
 for prime_location in grid:
-    x, y = prime_location
     for orientation in range(1,num_orientations+1):
         for tile_square_index in range(num_squares_in_tile):
-            x_offset, y_offset = tiles[orientation][tile_square_index] #orientation may be off by one
+            offset = tiles[orientation][tile_square_index] #orientation may be off by one
 
-            if x_offset != 0 or y_offset != 0:
-                #calculate location of new tile
-                location = (x+x_offset, y+y_offset)
+            #calculate location of new tile
+            location = tuple([i+j for i,j in zip(prime_location, offset)])
+
+            if location != prime_location:
 
                 #check if off grid
                 if location not in grid:
