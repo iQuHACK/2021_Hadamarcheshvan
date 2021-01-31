@@ -1,12 +1,26 @@
 CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 class TileDisplay():
-    def __init__(self, num_rows, num_cols):
-        self.current_index = 0
-        self.num_rows = num_rows
-        self.num_cols = num_cols
-        self.display = [["0" for c in range(num_cols)] for r in range(num_rows)]
-        self.out_of_bounds_chars = []
+    def __init__(self, num_rows=None, num_cols=None, grid=None, default_char="0"):
+        if grid and not num_rows and not num_cols:
+            max_x = 0
+            max_y = 0
+            for x,y in grid:
+                max_x = max(x,max_x)
+                max_y = max(x,max_y)
+            self.__init__(num_rows=max_x+1, num_cols=max_y+1, default_char=" ")
+
+            for x,y in grid:
+                self.display[x][y] = "0"
+        elif num_rows and num_cols:
+            self.current_index = 0
+            self.num_rows = num_rows
+            self.num_cols = num_cols
+            self.display = [[default_char for c in range(num_cols)] for r in range(num_rows)]
+            self.out_of_bounds_chars = []
+        else:
+            raise ValueError("only give both num_rows and num_cols or just a grid")
+
     def add_tile(self, location, tile):
         if tile == None:
             return
@@ -20,7 +34,7 @@ class TileDisplay():
             x_offset, y_offset = square
             xp = x+x_offset
             yp = y+y_offset
-            if(0 <= xp < self.num_rows and 0 <= yp < self.num_cols):
+            if(0 <= xp < self.num_rows and 0 <= yp < self.num_cols and self.display[xp][yp] != " "):
                 self.display[xp][yp] = character
             else:
                 self.out_of_bounds_chars.append(character)
