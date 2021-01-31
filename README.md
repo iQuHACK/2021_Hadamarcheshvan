@@ -27,7 +27,7 @@ The GitHub repository link is https://github.com/iQuHACK/2021_Hadamarcheshvan.
 [2] Asa Eagle, Takumi Kato, and Yuichiro Minato. Solving tiling puzzles with quantum annealing. 2019. arXiv: 1904.01770 [quant-ph].
  
  
-## ToDo
+## To Do
 Things we would want to fix/implement but didn't have enough time to do
 * Make it N-dimensional
 * Explore efficiency improvements
