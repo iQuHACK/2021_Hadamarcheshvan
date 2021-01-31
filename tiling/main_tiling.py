@@ -5,8 +5,8 @@ from graphics import TileDisplay
 import time
 dqm = DiscreteQuadraticModel()
 
-num_rows = 12
-num_cols = 12
+num_rows = 3
+num_cols = 3
 
 grid_points = []
 for r in range(num_rows):
@@ -14,7 +14,7 @@ for r in range(num_rows):
         grid_points.append((r,c))
 
 grid = set(grid_points)
-#grid = {(0,0),(1,0),(1,1),(1,2)}
+grid = {(0,0),(1,0),(2,0),(0,1),(0,2),(1,2),(2,2),(2,1)}
 
 gamma = 10*len(grid) + 1
 
@@ -87,7 +87,7 @@ end_time = time.time()
 print("took", end_time-start_time, "seconds")
 
 #print(sample)
-disp = TileDisplay(num_rows, num_cols)
+disp = TileDisplay(grid=grid)
 for location in sample:
     orientation = sample[location]
     disp.add_tile(location, tiles[orientation])
