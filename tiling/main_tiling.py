@@ -77,14 +77,14 @@ for location in grid:
 for prime_location0, prime_location1 in overlap_violations:
     dqm.set_quadratic(prime_location0, prime_location1, {elem: gamma for elem in overlap_violations[(prime_location0, prime_location1)]})
 
-#print("sending to leap")
-#start_time = time.time()
+print("sending to leap")
+start_time = time.time()
 sampler = LeapHybridDQMSampler()
 sampleset = sampler.sample_dqm(dqm, time_limit=2*len(grid))
 sample = sampleset.first.sample
 energy = sampleset.first.energy
-#end_time = time.time()
-#print("took", end_time-start_time, "seconds")
+end_time = time.time()
+print("took", end_time-start_time, "seconds")
 
 #print(sample)
 disp = TileDisplay(num_rows, num_cols)
