@@ -21,16 +21,16 @@ for d in range(1, len(grid_dims)):
 grid = set([tuple(e) for e in grid_points])
 #grid = {(0,0,0),(0,0,1),(0,1,0),(0,1,1),(1,0,0)}
 
-#lagrangean
-gamma = len(grid) + 1
-
-#number of orientations of a 2D tile
+#number of orientations of a tile
 num_orientations = 8 if num_dims==2 else 24
 
 #define tiles
 tiles = [[(0,0,0),(0,0,1),(0,1,0),(1,0,0)], [(0,0,0),(1,1,1),(2,2,2)]]
 num_tiles = len(tiles)
 num_squares_in_tile = [len(tile) for tile in tiles]
+
+#lagrangean
+gamma = len(grid)*max(num_squares_in_tile) + 1
 
 #generate all orientations of tiles
 tiles = [get_orientations(tile) for tile in tiles]
@@ -62,13 +62,15 @@ for prime_location in grid:
                         location_log[location] = [(prime_location, t, orientation)]
 
 #setting linear costs:
-#-10 for a valid tile placement
+#-10*#squares on tile for a valid tile placement
 #gamma for an invalid tile placement
 #0 otherwise
 for prime_location in grid:
     dqm.add_variable(num_tiles*num_orientations+1, label=prime_location)
 for prime_location in grid:
-    costs = [0] + [-1]*(num_tiles*num_orientations)
+    costs = [0]
+    for i in range(num_tiles):
+        costs += [-num_squares_in_tile[i]]*num_orientations
     if prime_location in out_of_bounds_log:
         for t, orientation in out_of_bounds_log[prime_location]:
             costs[orientation+t*num_orientations] = gamma
@@ -100,7 +102,7 @@ print("sending to leap")
 start_time = time.time()
 sampler = LeapHybridDQMSampler()
 #note that the time limit may need to be increased for especially large grid sizes
-sampleset = sampler.sample_dqm(dqm, time_limit=max(2*len(grid),5))
+sampleset = sampler.sample_dqm(dqm, time_limit=5)
 sample = sampleset.first.sample
 energy = sampleset.first.energy
 end_time = time.time()
@@ -118,3 +120,22 @@ if num_dims == 2:
             disp.add_tile(location, tile[orientation])
     print(disp)
 print(str(-energy) + " tiles fit in the grid!")
+
+if num_dims == 2:
+	#display optimal tiling
+	disp = TileDisplay(grid=grid)
+num_tiles = 0
+for location in sample:
+    val = sample[location]
+    if val != 0:
+        t = int(np.floor((val-1)/num_orientations))
+        orientation = val - t*num_orientations
+        tile = tiles[t]
+        if tile != None:
+            num_tiles += 1
+        if num_dims == 2:
+        	disp.add_tile(location, tile[orientation])
+if num_dims == 2:
+	print(disp)
+print(str(round(-energy)) + " out of " + str(len(grid)) + " squares filled in the grid!")
+print(f"{num_tiles} tiles used!")
