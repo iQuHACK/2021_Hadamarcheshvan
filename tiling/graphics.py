@@ -7,7 +7,7 @@ class TileDisplay():
             max_y = 0
             for x,y in grid:
                 max_x = max(x,max_x)
-                max_y = max(x,max_y)
+                max_y = max(y,max_y)
             self.__init__(num_rows=max_x+1, num_cols=max_y+1, default_char=" ")
 
             for x,y in grid:
