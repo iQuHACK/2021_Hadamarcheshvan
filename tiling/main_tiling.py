@@ -8,7 +8,7 @@ dqm = DiscreteQuadraticModel()
 
 #dimensions of grid
 num_rows = 6
-num_cols = 3
+num_cols = 8
 
 #generate rectangular grid
 grid_points = []
@@ -16,8 +16,8 @@ for r in range(num_rows):
     for c in range(num_cols):
         grid_points.append((r,c))
 
-grid = set(grid_points)
-grid = {(0,0),(0,1),(0,2),(1,0),(1,1)}
+#grid = set(grid_points)
+grid = {(0,0),(0,1),(0,2),(0,3),(1,1)}
 
 #lagrangean
 gamma = 10*len(grid) + 1
@@ -26,7 +26,7 @@ gamma = 10*len(grid) + 1
 num_orientations = 8
 
 #define tiles
-tiles = [[(0,0),(1,0),(0,1)], [(0,0),(1,0)], [(0,0),(1,1)]]
+tiles = [[(0,0),(1,0),(2,0)], [(0,0),(1,1)], [(0,0),(1,1),(2,2)]]
 num_tiles = len(tiles)
 num_squares_in_tile = [len(tile) for tile in tiles]
 
