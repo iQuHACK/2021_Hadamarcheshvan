@@ -29,6 +29,7 @@ for prime_location in grid:
             #check if off grid
             if location not in grid:
                 out_of_bounds_log.append((location, orientation))
+                #no need to log these - just set coefficient here
             else:
                 #log that this tile would hit this location
                 if location in location_log:
