@@ -17,8 +17,8 @@ grid = set(grid_points)
 gamma = len(grid) + 1
 
 num_orientations = 8
-num_squares_in_tile = 3
-tile = [(0,0),(1,0),(0,1)]
+num_squares_in_tile = 2
+tile = [(0,0),(1,0)]
 tiles = get_orientations(tile) #... all the orientation
 
 location_log = {}
@@ -32,21 +32,19 @@ for prime_location in grid:
             #calculate location of new tile
             location = tuple([i+j for i,j in zip(prime_location, offset)])
 
-            if location != prime_location:
-
-                #check if off grid
-                if location not in grid:
-                    if prime_location in out_of_bounds_log:
-                        out_of_bounds_log[prime_location].append(orientation)
-                    else:
-                        out_of_bounds_log[prime_location] = [orientation]
-                    #no need to log these - just set coefficient here
+            #check if off grid
+            if location not in grid:
+                if prime_location in out_of_bounds_log:
+                    out_of_bounds_log[prime_location].append(orientation)
                 else:
-                    #log that this tile would hit this location
-                    if location in location_log:
-                        location_log[location].append((prime_location, orientation))
-                    else:
-                        location_log[location] = [(prime_location, orientation)]
+                    out_of_bounds_log[prime_location] = [orientation]
+                #no need to log these - just set coefficient here
+            else:
+                #log that this tile would hit this location
+                if location in location_log:
+                    location_log[location].append((prime_location, orientation))
+                else:
+                    location_log[location] = [(prime_location, orientation)]
 
 #Setting linear costs
 for prime_location in grid:
