@@ -109,19 +109,6 @@ end_time = time.time()
 print("took", end_time-start_time, "seconds")
 
 if num_dims == 2:
-    #display optimal tiling
-    disp = TileDisplay(grid=grid)
-    for location in sample:
-        val = sample[location]
-        if val != 0:
-            t = int(np.floor((val-1)/num_orientations))
-            orientation = val - t*num_orientations
-            tile = tiles[t]
-            disp.add_tile(location, tile[orientation])
-    print(disp)
-print(str(-energy) + " tiles fit in the grid!")
-
-if num_dims == 2:
 	#display optimal tiling
 	disp = TileDisplay(grid=grid)
 num_tiles = 0
