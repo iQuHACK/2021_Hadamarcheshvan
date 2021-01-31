@@ -18,6 +18,7 @@ class TileDisplay():
             self.num_cols = num_cols
             self.display = [[default_char for c in range(num_cols)] for r in range(num_rows)]
             self.out_of_bounds_chars = []
+            self.overlap_chars = []
         else:
             raise ValueError("only give both num_rows and num_cols or just a grid")
 
@@ -34,15 +35,22 @@ class TileDisplay():
             x_offset, y_offset = square
             xp = x+x_offset
             yp = y+y_offset
-            if(0 <= xp < self.num_rows and 0 <= yp < self.num_cols and self.display[xp][yp] != " "):
+            if(0 <= xp < self.num_rows and 0 <= yp < self.num_cols and self.display[xp][yp] == "0"):
                 self.display[xp][yp] = character
+            elif self.display[xp][yp] != "0" and self.display[xp][yp] != " ":
+                self.overlap_chars.append((character,self.display[xp][yp])) #char on disp
             else:
                 self.out_of_bounds_chars.append(character)
     def __str__(self):
         result = ""
 
+        if len(self.overlap_chars) > 0:
+            result += "Overlap error: "
+            result += ", ".join([top+" on "+bottom for top, bottom in self.overlap_chars])
+            result += "\n"
+
         if len(self.out_of_bounds_chars) > 0:
-            result += "This has an out of bounds error at tiles: "
+            result += "Out of bounds error at tiles: "
             result += ", ".join(self.out_of_bounds_chars)
             result += "\n"
 
@@ -73,3 +81,12 @@ if __name__ == "__main__":
     disp.add_tile((3,3),[(0,0),(0,1),(1,1)])
     print(disp)
     print()
+
+    disp = TileDisplay(grid=[(0,0),(1,0),(0,1)])
+    print(disp)
+    disp.add_tile((0,0),[(0,0),(0,1)])
+    print(disp)
+    disp.add_tile((1,0),[(0,0),(0,1)])
+    print(disp)
+    disp.add_tile((1,0),[(0,0),(0,1)])
+    print(disp)
