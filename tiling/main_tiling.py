@@ -26,7 +26,7 @@ gamma = 10*len(grid) + 1
 num_orientations = 8
 
 #define tiles
-tiles = [[(0,0),(1,0),(2,0)], [(0,0),(1,1)], [(0,0),(1,1),(2,2)]]
+tiles = [[(0,0),(1,0),(2,0)], [(0,0),(-1,-1)], [(0,0),(1,1),(2,2)]]
 num_tiles = len(tiles)
 num_squares_in_tile = [len(tile) for tile in tiles]
 
