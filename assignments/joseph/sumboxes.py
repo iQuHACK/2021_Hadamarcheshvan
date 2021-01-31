@@ -9,7 +9,7 @@ Q = {(0, 0): -1, (1, 1): -1, (2, 2): -1, (0,2): 2, (0,1): 2, (1,2): 2}
 Q_objective = {(0,0): 17, (1,1): 21, (2,2): 19}
 Q_constraint = {}
 for i in range(0,3):
-    Q_constraint[(i,i)] = -1 #squared terms and linear terms add to be linear
+    Q_constraint[(i,i)] = -3 #squared terms and linear terms add to be linear
     for j in range(i+1,3):
         Q_constraint[(i,j)] = 2 #cross terms
 
