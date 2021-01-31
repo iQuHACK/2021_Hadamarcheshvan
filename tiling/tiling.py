@@ -57,7 +57,7 @@ for prime_location in grid:
 overlap_violations = {}
 
 for location in grid:
-    log = location_log[location]
+    log = sorted(location_log[location])
     length = len(log)
     for i in range(length):
         prime_location0, orientation0 = log[i]
@@ -67,10 +67,6 @@ for location in grid:
                 overlap_violations[(prime_location0, prime_location1)].append((orientation0, orientation1))
             else:
                 overlap_violations[(prime_location0, prime_location1)] = [(orientation0, orientation1)]
-            if (prime_location1, prime_location0) in overlap_violations:
-                overlap_violations[(prime_location1, prime_location0)].append((orientation1, orientation0))
-            else:
-                overlap_violations[(prime_location1, prime_location0)] = [(orientation1, orientation0)]
 
 for prime_location0, prime_location1 in overlap_violations:
     dqm.set_quadratic(prime_location0, prime_location1, {elem: gamma for elem in overlap_violations[(prime_location0, prime_location1)]})
