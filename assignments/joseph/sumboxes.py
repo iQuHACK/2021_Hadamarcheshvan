@@ -2,10 +2,6 @@ import dimod
 
 exactsolver = dimod.ExactSolver()
 
-Q = {(0, 0): -1, (1, 1): -1, (2, 2): -1, (0,2): 2, (0,1): 2, (1,2): 2}
-
-
-
 Q_objective = {(0,0): 17, (1,1): 21, (2,2): 19}
 Q_constraint = {}
 for i in range(0,3):
