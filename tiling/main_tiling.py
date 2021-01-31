@@ -57,7 +57,7 @@ for prime_location in grid:
                     location_log[location] = [(prime_location, orientation)]
 
 #setting linear costs:
-#-1 for a valid tile placement
+#-10 for a valid tile placement
 #gamma for an invalid tile placement
 #0 otherwise
 for prime_location in grid:
