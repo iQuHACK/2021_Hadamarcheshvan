@@ -95,23 +95,3 @@ class TileDisplay():
             result += "*"
         
         return result
-
-if __name__ == "__main__":
-    disp = TileDisplay(5,5)
-    print(disp)
-    print()
-    disp.add_tile((1,1),[(0,0),(0,1),(1,1)])
-    print(disp)
-    print()
-    disp.add_tile((3,3),[(0,0),(0,1),(1,1)])
-    print(disp)
-    print()
-
-    disp = TileDisplay(grid=[(0,0),(1,0),(0,1)])
-    print(disp)
-    disp.add_tile((0,0),[(0,0),(0,1)])
-    print(disp)
-    disp.add_tile((1,0),[(0,0),(0,1)])
-    print(disp)
-    disp.add_tile((1,0),[(0,0),(0,1)])
-    print(disp)

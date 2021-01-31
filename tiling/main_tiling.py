@@ -7,26 +7,28 @@ import time
 dqm = DiscreteQuadraticModel()
 
 #dimensions of grid
-num_rows = 6
-num_cols = 8
+grid_dims = [2,2,2]
+num_dims = len(grid_dims)
 
-#generate rectangular grid
-grid_points = []
-for r in range(num_rows):
-    for c in range(num_cols):
-        grid_points.append((r,c))
+grid_points = [[j] for j in range(grid_dims[0])]
+for d in range(1, len(grid_dims)):
+    ls_copy = grid_points[:][:]
+    grid_points = []
+    for e in ls_copy:
+        for k in range(grid_dims[d]):
+            grid_points.append(e + [k])
 
-#grid = set(grid_points)
-grid = {(0,0),(0,1),(0,2),(0,3),(1,1)}
+grid = set([tuple(e) for e in grid_points])
+#grid = {(0,0,0),(0,0,1),(0,1,0),(0,1,1),(1,0,0)}
 
 #lagrangean
-gamma = 10*len(grid) + 1
+gamma = len(grid) + 1
 
 #number of orientations of a 2D tile
-num_orientations = 8
+num_orientations = 8 if num_dims==2 else 24
 
 #define tiles
-tiles = [[(0,0),(1,0),(2,0)], [(0,0),(-1,-1)], [(0,0),(1,1),(2,2)]]
+tiles = [[(0,0,0),(0,0,1),(0,1,0),(1,0,0)], [(0,0,0),(1,1,1),(2,2,2)]]
 num_tiles = len(tiles)
 num_squares_in_tile = [len(tile) for tile in tiles]
 
@@ -66,7 +68,7 @@ for prime_location in grid:
 for prime_location in grid:
     dqm.add_variable(num_tiles*num_orientations+1, label=prime_location)
 for prime_location in grid:
-    costs = [0] + [-10]*(num_tiles*num_orientations)
+    costs = [0] + [-1]*(num_tiles*num_orientations)
     if prime_location in out_of_bounds_log:
         for t, orientation in out_of_bounds_log[prime_location]:
             costs[orientation+t*num_orientations] = gamma
@@ -104,14 +106,15 @@ energy = sampleset.first.energy
 end_time = time.time()
 print("took", end_time-start_time, "seconds")
 
-#display optimal tiling
-disp = TileDisplay(grid=grid)
-for location in sample:
-    val = sample[location]
-    if val != 0:
-        t = int(np.floor((val-1)/num_orientations))
-        orientation = val - t*num_orientations
-        tile = tiles[t]
-        disp.add_tile(location, tile[orientation])
-print(disp)
-print(str(round(-energy/10)) + " tiles fit in the grid!")
+if num_dims == 2:
+    #display optimal tiling
+    disp = TileDisplay(grid=grid)
+    for location in sample:
+        val = sample[location]
+        if val != 0:
+            t = int(np.floor((val-1)/num_orientations))
+            orientation = val - t*num_orientations
+            tile = tiles[t]
+            disp.add_tile(location, tile[orientation])
+    print(disp)
+print(str(-energy) + " tiles fit in the grid!")
