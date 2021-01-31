@@ -35,15 +35,15 @@ def mirror(tile):
 if __name__ == "__main__":
     from graphics import TileDisplay
     
-    disp = TileDisplay(5,30)
-    tile = [(0,0),(1,0),(0,1)]
+    disp = TileDisplay(6,40)
+    tile = [(0,0),(1,0),(0,1),(0,2)]
 
     orientations = get_orientations(tile)
 
     for i in range(1,len(orientations)):
         t = orientations[i]
-        offset = i*3
-        disp.add_tile((1,offset), t)
+        offset = i*4
+        disp.add_tile((3,offset), t)
     
     print(disp)
 
