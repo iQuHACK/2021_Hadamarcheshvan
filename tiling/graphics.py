@@ -27,8 +27,10 @@ class TileDisplay():
         if self.has_out_of_bounds:
             result += "This has an out of bounds error:\n"
 
-        for i in range(num_cols):
+        for i in range(self.num_cols):
             result += "*"
+        
+        result += "\n"
 
         for i in range(len(self.display)):
             line = self.display[i]
@@ -37,7 +39,7 @@ class TileDisplay():
             
             result += "\n"
 
-        for i in range(num_cols):
+        for i in range(self.num_cols):
             result += "*"
         
         return result
