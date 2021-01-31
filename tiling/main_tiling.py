@@ -51,8 +51,9 @@ for prime_location in grid:
     dqm.add_variable(num_orientations+1, label=prime_location)
 for prime_location in grid:
     costs = [0] + [-1]*num_orientations
-    for orientation in out_of_bounds_log[prime_location]:
-        costs[orientation] = gamma
+    if prime_location in out_of_bounds_log:
+        for orientation in out_of_bounds_log[prime_location]:
+            costs[orientation] = gamma
     dqm.set_linear(prime_location, costs)
 
 overlap_violations = {}
