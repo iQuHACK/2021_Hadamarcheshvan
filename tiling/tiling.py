@@ -1,7 +1,14 @@
 
+num_rows = 4
+num_cols = 4
 
+grid_points = []
+for r in range(num_rows):
+    for c in range(num_cols):
+        grid_points.append((c,r))
 
-grid = [(0,0), (1,1)] #...
+grid = set(grid_points)
+
 num_orientations = 8
 num_squares_in_tile = 3
 tile = [(0,0),(1,0),(1,1)]
