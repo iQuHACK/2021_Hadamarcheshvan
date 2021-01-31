@@ -1,14 +1,18 @@
 def get_orientations(tile):
-    # tile = list of tups 
+    '''
+    Generate all orientations of a tile
+    '''
     orientations = []
     original_tile = tile[:]
     next_tile = tile
 
+    #4 rotations separated by clockwise rotation
     orientations.append(None)
     for i in range(4):
         orientations.append(next_tile)
         next_tile = rotate_clockwise(next_tile)
     
+    #4 mirrored rotations separated by clockwise rotation
     next_tile = mirror(original_tile)
     for i in range(4):
         orientations.append(next_tile)
@@ -17,20 +21,22 @@ def get_orientations(tile):
     return orientations
 
 def rotate_clockwise(tile):
+    '''
+    Rotate a tile clockwise
+    '''
     new_tile = []
     for square in tile:
         new_tile.append((square[1], -1*square[0]))
     return new_tile
 
 def mirror(tile):
+    '''
+    Mirror a tile vertically
+    '''
     new_tile = []
     for square in tile:
         new_tile.append((square[0], -1*square[1]))
     return new_tile 
-
-#tile = [(0, 0), (1, 0), (1, 1), (1, 2), (1, 3)]
-#print(rotate_clockwise(tile))
-#print(get_orientations(tile))
 
 if __name__ == "__main__":
     from graphics import TileDisplay
