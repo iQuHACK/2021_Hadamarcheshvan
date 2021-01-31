@@ -2,7 +2,7 @@ from dimod import DiscreteQuadraticModel
 from dwave.system import LeapHybridDQMSampler
 import networkx as nx
 num_colors = 4
-colors = range(num_colors)
+colors = [n for n in range(num_colors)]
 dqm = DiscreteQuadraticModel()
 G = nx.Graph()
 G.add_edges_from([(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (0, 6)])
