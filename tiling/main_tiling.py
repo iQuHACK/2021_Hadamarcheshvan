@@ -14,6 +14,7 @@ grid_points = []
 for r in range(num_rows):
     for c in range(num_cols):
         grid_points.append((r,c))
+        
 
 grid = set(grid_points)
 #grid = {(0,0),(1,0),(2,0),(0,1),(0,2),(1,2),(2,2),(2,1)}
