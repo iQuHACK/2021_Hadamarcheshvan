@@ -1,5 +1,6 @@
 from dimod import DiscreteQuadraticModel
 from dwave.system import LeapHybridDQMSampler
+from tile_orientations import get_orientations
 dqm = DiscreteQuadraticModel()
 
 num_rows = 4
@@ -17,7 +18,7 @@ gamma = len(grid) + 1
 num_orientations = 8
 num_squares_in_tile = 3
 tile = [(0,0),(1,0),(1,1)]
-tiles = [[(0,0),(1,0),(1,1)],[(0,0),(0,1),(1,1)]] #... all the orientations
+tiles = get_orientations(tile) #... all the orientation
 
 location_log = {}
 out_of_bounds_log = {}
