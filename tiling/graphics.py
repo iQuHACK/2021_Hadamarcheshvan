@@ -3,9 +3,9 @@ CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 class TileDisplay():
     def __init__(self, num_rows=None, num_cols=None, grid=None, default_char="0"):
         '''
-            giving num_rows and num_cols will make a rectangular display
-            giving grid will make a display that only shows values in the grid
-            coordinate list
+        Giving num_rows and num_cols will make a rectangular display
+        Giving grid will make a display that only shows values in the grid
+        Coordinate list
         '''
         if grid and not num_rows and not num_cols:
 
@@ -37,8 +37,8 @@ class TileDisplay():
 
     def add_tile(self, location, tile):
         '''
-            adds a tile at the given location
-            will do nothing if given tile=None
+        Adds a tile at the given location
+        Will do nothing if given tile=None
         '''
         if tile == None:
             return
