@@ -49,9 +49,9 @@ for prime_location in grid:
 for prime_location in grid:
     dqm.add_variable(num_orientations+1, label=prime_location)
 for prime_location in grid:
-    costs = [0] + [1]*num_orientations
+    costs = [0] + [-1]*num_orientations
     for orientation in out_of_bounds_log[prime_location]:
-        costs[orientation+1] = gamma+1
+        costs[orientation] = gamma
     dqm.set_linear(prime_location, costs)
 
 overlap_violations = {}
@@ -73,7 +73,7 @@ for location in grid:
                 overlap_violations[(prime_location1, prime_location0)] = [(orientation1, orientation0)]
 
 for prime_location0, prime_location1 in overlap_violations:
-    dqm.set_quadratic(prime_location0, prime_location1, {elem: gamma+1 for elem in overlap_violations[(prime_location0, prime_location1)]})
+    dqm.set_quadratic(prime_location0, prime_location1, {elem: gamma for elem in overlap_violations[(prime_location0, prime_location1)]})
 
 sampler = LeapHybridDQMSampler()
 sampleset = sampler.sample_dqm(dqm)
