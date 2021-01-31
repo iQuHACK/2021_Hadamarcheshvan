@@ -31,3 +31,19 @@ def mirror(tile):
 #tile = [(0, 0), (1, 0), (1, 1), (1, 2), (1, 3)]
 #print(rotate_clockwise(tile))
 #print(get_orientations(tile))
+
+if __name__ == "__main__":
+    from graphics import TileDisplay
+    
+    disp = TileDisplay(5,30)
+    tile = [(0,0),(1,0),(0,1)]
+
+    orientations = get_orientations(tile)
+
+    for i in range(1,len(orientations)):
+        t = orientations[i]
+        offset = i*3
+        disp.add_tile((1,offset), t)
+    
+    print(disp)
+
