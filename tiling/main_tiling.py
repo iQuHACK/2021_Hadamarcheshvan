@@ -7,7 +7,7 @@ import time
 dqm = DiscreteQuadraticModel()
 
 #dimensions of grid
-num_rows = 6
+num_rows = 5
 num_cols = 8
 
 #generate rectangular grid
@@ -16,19 +16,19 @@ for r in range(num_rows):
     for c in range(num_cols):
         grid_points.append((r,c))
 
-#grid = set(grid_points)
-grid = {(0,0),(0,1),(0,2),(0,3),(1,1)}
-
-#lagrangean
-gamma = 10*len(grid) + 1
+grid = set(grid_points)
+#grid = {(0,0),(0,1),(0,2),(0,3),(1,1)}
 
 #number of orientations of a 2D tile
 num_orientations = 8
 
 #define tiles
-tiles = [[(0,0),(1,0),(2,0)], [(0,0),(-1,-1)], [(0,0),(1,1),(2,2)]]
+tiles = [[(0,0),(0,1),(0,2),(0,3),(1,0)]]
 num_tiles = len(tiles)
 num_squares_in_tile = [len(tile) for tile in tiles]
+
+#lagrangean
+gamma = len(grid)*max(num_squares_in_tile) + 1
 
 #generate all orientations of tiles
 tiles = [get_orientations(tile) for tile in tiles]
@@ -60,13 +60,15 @@ for prime_location in grid:
                         location_log[location] = [(prime_location, t, orientation)]
 
 #setting linear costs:
-#-10 for a valid tile placement
+#-10*#squares on tile for a valid tile placement
 #gamma for an invalid tile placement
 #0 otherwise
 for prime_location in grid:
     dqm.add_variable(num_tiles*num_orientations+1, label=prime_location)
 for prime_location in grid:
-    costs = [0] + [-10]*(num_tiles*num_orientations)
+    costs = [0]
+    for i in range(num_tiles):
+        costs += [-num_squares_in_tile[i]]*num_orientations
     if prime_location in out_of_bounds_log:
         for t, orientation in out_of_bounds_log[prime_location]:
             costs[orientation+t*num_orientations] = gamma
@@ -98,7 +100,7 @@ print("sending to leap")
 start_time = time.time()
 sampler = LeapHybridDQMSampler()
 #note that the time limit may need to be increased for especially large grid sizes
-sampleset = sampler.sample_dqm(dqm, time_limit=max(2*len(grid),5))
+sampleset = sampler.sample_dqm(dqm, time_limit=5)
 sample = sampleset.first.sample
 energy = sampleset.first.energy
 end_time = time.time()
@@ -106,12 +108,16 @@ print("took", end_time-start_time, "seconds")
 
 #display optimal tiling
 disp = TileDisplay(grid=grid)
+num_tiles = 0
 for location in sample:
     val = sample[location]
     if val != 0:
         t = int(np.floor((val-1)/num_orientations))
         orientation = val - t*num_orientations
         tile = tiles[t]
+        if tile != None:
+            num_tiles += 1
         disp.add_tile(location, tile[orientation])
 print(disp)
-print(str(round(-energy/10)) + " tiles fit in the grid!")
+print(str(round(-energy/10)) + " squares filled in the grid!")
+print(f"{num_tiles} tiles used!")
