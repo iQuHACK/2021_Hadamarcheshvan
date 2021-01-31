@@ -14,10 +14,12 @@ for r in range(num_rows):
         grid_points.append((r,c))
 
 grid = set(grid_points)
+#grid = {(0,0),(1,0),(1,1),(1,2)}
 
-gamma = len(grid) + 1
+gamma = 10*len(grid) + 1
 
 num_orientations = 8
+
 tile = [(0,0),(1,0),(0,1)]
 num_squares_in_tile = len(tile)
 tiles = get_orientations(tile) #... all the orientation
@@ -51,7 +53,7 @@ for prime_location in grid:
 for prime_location in grid:
     dqm.add_variable(num_orientations+1, label=prime_location)
 for prime_location in grid:
-    costs = [0] + [-1]*num_orientations
+    costs = [0] + [-10]*num_orientations
     if prime_location in out_of_bounds_log:
         for orientation in out_of_bounds_log[prime_location]:
             costs[orientation] = gamma
@@ -78,7 +80,7 @@ for prime_location0, prime_location1 in overlap_violations:
 print("sending to leap")
 start_time = time.time()
 sampler = LeapHybridDQMSampler()
-sampleset = sampler.sample_dqm(dqm)
+sampleset = sampler.sample_dqm(dqm, time_limit=60)
 sample = sampleset.first.sample
 energy = sampleset.first.energy
 end_time = time.time()
