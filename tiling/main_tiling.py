@@ -17,8 +17,8 @@ grid = set(grid_points)
 gamma = len(grid) + 1
 
 num_orientations = 8
-num_squares_in_tile = 2
 tile = [(0,0),(1,0)]
+num_squares_in_tile = len(tile)
 tiles = get_orientations(tile) #... all the orientation
 
 location_log = {}
