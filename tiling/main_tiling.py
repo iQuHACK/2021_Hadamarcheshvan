@@ -119,5 +119,5 @@ for location in sample:
             num_tiles += 1
         disp.add_tile(location, tile[orientation])
 print(disp)
-print(str(round(-energy/10)) + " squares filled in the grid!")
+print(str(round(-energy)) + " out of " + str(len(grid)) + " squares filled in the grid!")
 print(f"{num_tiles} tiles used!")
