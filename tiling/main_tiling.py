@@ -6,8 +6,8 @@ import time
 dqm = DiscreteQuadraticModel()
 
 #dimensions of grid
-num_rows = 3
-num_cols = 3
+num_rows = 12
+num_cols = 6
 
 #generate rectangular grid
 grid_points = []
@@ -16,7 +16,7 @@ for r in range(num_rows):
         grid_points.append((r,c))
 
 grid = set(grid_points)
-grid = {(0,0),(1,0),(2,0),(0,1),(0,2),(1,2),(2,2),(2,1)}
+#grid = {(0,0),(1,0),(2,0),(0,1),(0,2),(1,2),(2,2),(2,1)}
 
 #lagrangean
 gamma = 10*len(grid) + 1
@@ -94,7 +94,8 @@ for prime_location0, prime_location1 in overlap_violations:
 print("sending to leap")
 start_time = time.time()
 sampler = LeapHybridDQMSampler()
-sampleset = sampler.sample_dqm(dqm, time_limit=5*len(grid))
+#note that the time limit may need to be increased for especially large grid sizes
+sampleset = sampler.sample_dqm(dqm, time_limit=max(len(grid),5))
 sample = sampleset.first.sample
 energy = sampleset.first.energy
 end_time = time.time()
