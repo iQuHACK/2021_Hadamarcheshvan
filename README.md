@@ -2,7 +2,7 @@
 Anna Rose Osofsky, Jacob Pritzker, Joseph Feld, Sage Simhon
 ## Introduction
  
-Quantum computing has the promise to speed up our solving of NP-hard problems through annealing. The idea of having a verifier of valid solutions allows for clear translation into a QUBO or DFQ, making the use of a QPU fairly straightforward for this class of problems.  
+Quantum computing has the promise of speeding up our solving of NP-hard problems through annealing. A polynomial-time verifier allows for clear translation into a QUBO or DFQ, making the use of a QPU fairly straightforward for this class of problems.  
 In this project, we present an implementation of a quantum tiling problem solver. Given a list of tiles to use and a grid, it will completely tile that grid with the given tiles if possible. If it is not possible, it will cover as much space as possible. Our system supports arbitrary numbers of arbitrary tiles tiling an arbitrary space in 2 or 3 dimensions, which is an NP-hard problem[1].  
 We would like to thank Ariel Jacobs for his amazing tiling problems which inspired this project.  
 We saw that other people have used quantum annealing to solve a similar problem[2], but our solution is different since we have 3D capabilities, support for arbitrary tiles and grids, the ability to use pentominoes and above, the ability to find a good solution that doesn’t tile the whole grid in the case where a complete tiling is impossible, and their problem is about having only a specific number of each tile.  
