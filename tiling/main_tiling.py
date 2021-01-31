@@ -1,10 +1,11 @@
 from dimod import DiscreteQuadraticModel
 from dwave.system import LeapHybridDQMSampler
 from tile_orientations import get_orientations
+from graphics import TileDisplay
 dqm = DiscreteQuadraticModel()
 
-num_rows = 4
-num_cols = 4
+num_rows = 2
+num_cols = 3
 
 grid_points = []
 for r in range(num_rows):
@@ -17,7 +18,7 @@ gamma = len(grid) + 1
 
 num_orientations = 8
 num_squares_in_tile = 3
-tile = [(0,0),(1,0),(1,1)]
+tile = [(0,0),(1,0),(0,1)]
 tiles = get_orientations(tile) #... all the orientation
 
 location_log = {}
@@ -79,5 +80,13 @@ sampler = LeapHybridDQMSampler()
 sampleset = sampler.sample_dqm(dqm)
 sample = sampleset.first.sample
 energy = sampleset.first.energy
+
+print(sample)
+print(energy)
+disp = TileDisplay(num_rows, num_cols)
+for location in sample:
+    orientation = sample[location]
+    disp.add_tile(location, tiles[orientation])
+    print(disp)
 
 # locations_Log {tuple:[(tuple, int)]}

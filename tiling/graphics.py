@@ -8,6 +8,9 @@ class TileDisplay():
         self.display = [["0" for c in range(num_cols)] for r in range(num_rows)]
         self.out_of_bounds_chars = []
     def add_tile(self, location, tile):
+        if tile == None:
+            return
+
         character = CHARACTERS[self.current_index]
         self.current_index += 1
         #loop around if use too many tiles
